@@ -1,0 +1,113 @@
+%
+%DEFINE
+%
+DRG=pi/180;
+
+angl(1:3)=input('enter alpha, beta, gamma :');
+
+alp = angl(1)*DRG;
+bet = angl(2)*DRG;
+gam = angl(3)*DRG;
+
+ctz = cos(alp);
+stz = sin(alp);
+cty = cos(bet);
+sty = sin(bet);
+ctx = cos(gam);
+stx = sin(gam);
+%
+%MATRIX
+%
+Rz =    [ctz	-stz	0	
+		 stz	ctz 	0	
+		 0	     0	    1];
+
+
+
+Ry =    [cty	 0	   sty	
+		 0	     1	    0	
+		 -sty	 0	   cty];
+
+
+	
+Rx =    [1	     0	    0	
+		 0	    ctx	  -stx	
+		 0	    stx	   ctx];
+	
+%
+%PARTA
+%
+
+Rab = Rz*Ry*Rx
+
+%
+%PARTB
+%
+
+angles(1:3,1:3)=input('enter a R matrix (3X3) or copy this one[0.9254,0.0180,0.3785;0.1632,0.8826,-0.4410;-0.3420,0.4698,0.8138]:');
+
+angles
+
+
+ang = zeros(1,3);
+
+if abs(angles(1,1)) < eps & abs(angles(2,1)) < eps,
+		% singularity
+		ang(1) = 0;
+		ang(2) = atan2(-angles(3,1), angles(1,1));
+		ang(3) = atan2(-angles(2,3), angles(2,2));
+else,
+		ang(1) = atan2(angles(2,1), angles(1,1));
+		sp = sin(ang(1));
+		cp = cos(ang(1));
+		ang(2) = atan2(-angles(3,1), cp * angles(1,1) + sp * angles(2,1));
+		ang(3) = atan2(sp * angles(1,3) - cp * angles(2,3), cp*angles(2,2) - sp*angles(1,2));
+end
+
+ang/DRG
+
+%
+%PARTC
+%
+
+betay = input('beta angle:');
+Pb = input('enter Pb (column-wise) or use [1;0;1]:');
+bety = betay*DRG;
+
+ctyy = cos(bety);
+styy = sin(bety);
+Ryy =    [ctyy	0	styy	
+		0	    1	0   	
+		-styy	0	ctyy];
+
+Pa=Ryy*Pb
+%-----------------------------------------------------------------------------
+%
+%PARTD
+%
+
+%1
+
+angl(1:3)=input('enter alpha, beta, gamma :');
+alp=angs(1)*DRG;
+bet=angs(2)*DRG;
+gam=angs(3)*DRG;
+Tz=rotz(alp); Rz=Tz(1:3,1:3);
+Ty=roty(bet); Ry=Ty(1:3,1:3);
+Tx=rotz(gam); Rx=Tx(1:3,1:3);
+
+Trpy=rpy2tr(alp,bet,gam);
+Rrpy=Trpy(1:3,1:3)
+
+%2
+
+angles2(1:3,1:3)=input('enter a R matrix (3X3) or copy this one[0.9254,0.0180,0.3785;0.1632,0.8826,-0.4410;-0.3420,0.4698,0.8138]:');
+ang2=tr2rpy(angles2);
+ang2/DRG
+
+%3
+
+betay2 = input('beta angle:');
+Pb2 = input('enter Pb (column-wise) or use [1;0;1]:');
+Tyc=roty(betay2*DR); Ryc=Tyc(1:3,1:3);
+Pa=Ryc*Pb2
