@@ -1,5 +1,13 @@
 clear
 
+l1= link([0 0 0 -pi/2])
+l2 = link([0 0 0 pi/2])
+l3 = link([0 0 0 0])
+robot1 = robot({l1,l2,l3})
+tr1 = robot.fkine([pi/6 pi/6 pi/6])
+
+
+
 l1 = 4;
 l2 = 3;
 l3 = 2;
@@ -8,9 +16,9 @@ l3 = 2;
 DRG=pi/180;
 
 
-t1 = 0 * DRG ;
-t2 = 0 * DRG;
-t3 = 0 * DRG;
+t1 = 10 * DRG ;
+t2 = 20 * DRG;
+t3 = 30 * DRG;
 LK1 = LINK([ 0 0 t1  0 0]);
 LK2 = LINK([ 0 l1 t2 0 0]);
 LK3 = LINK([ 0 l2 t3 0 0]);
@@ -22,13 +30,12 @@ r03.name = 'not gipe'
 q03=[0 t1 t2]
 q0H=[0 t1 t2 t3]
 T03 = fkine(r03,q03)
-T0H =    [0.866    0.5      0   -3.1245     
-          -0.5     0.866    0   9.1674  
-          0        0        1   0  
-          0        0        0   1]   
+T0H = fkine(r0H,q0H)
 
-M = [1,1,1,1,0,0]
+M0H = [1,1,1,1,0,0]
 
-Q = ikine(r0H,T0H,q0H,M)
+Q = [0, , ,]
 
-degree = Q/DRG
+QH = ikine(r0H,T0H,Q,M0H)
+
+degree = QH/DRG
